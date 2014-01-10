@@ -41,7 +41,8 @@ namespace set_basic_aspnet_mvc.Configurations
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            container.Register(Classes.FromThisAssembly().BasedOn<IController>().Unless(x => x.Name == "BaseController").LifestyleTransient());
+            container.Register(Classes.FromThisAssembly().BasedOn<IController>()
+                .Unless(x => x.Name == "BaseController").LifestyleTransient());
         }
     }
 
@@ -50,8 +51,8 @@ namespace set_basic_aspnet_mvc.Configurations
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             container.Register(
+                Component.For<IDbContext>().ImplementedBy<DataContext>().LifestylePerWebRequest(),
                 Component.For(typeof(IRepository<>)).ImplementedBy(typeof(Repository<>)).LifestyleTransient(),
-
                 Component.For<IFormsAuthenticationService>().ImplementedBy<FormsAuthenticationService>().LifestylePerWebRequest(),
                 Component.For<IUserService>().ImplementedBy<UserService>().LifestylePerWebRequest(),
                 Component.For<IReportService>().ImplementedBy<ReportService>().LifestylePerWebRequest(),

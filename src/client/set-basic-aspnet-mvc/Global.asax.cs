@@ -7,6 +7,8 @@ using Castle.Windsor;
 using Castle.Windsor.Installer;
 
 using set_basic_aspnet_mvc.Configurations;
+using set_basic_aspnet_mvc.Domain.Repositories;
+using System.Data.Entity;
 
 namespace set_basic_aspnet_mvc
 {
@@ -19,7 +21,15 @@ namespace set_basic_aspnet_mvc
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
+            using (var db = new DataContext())
+            {
+                Database.SetInitializer(new DefaultInitializer());
+                db.Database.Initialize(true);
+            }
+
             PrepareIocContainer();
+
+
         }
 
         private static void PrepareIocContainer()
